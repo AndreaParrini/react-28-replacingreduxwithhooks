@@ -20,11 +20,11 @@ const store = createStore(rootReducer);
 const root = ReactDOM.createRoot(document.getElementById('root')); 
 root.render(
  /*  <Provider store={store}> */
- <ProductsContextProvider>
+ /* <ProductsContextProvider> */
     <BrowserRouter>
       <App />
     </BrowserRouter>
- </ProductsContextProvider>
+ /* </ProductsContextProvider> */
     
   /* </Provider> */
 );
