@@ -4,8 +4,8 @@ let globalState= {};
 let listeners= [];
 let actions= {};
 
-export const useStore = () =>{
-    const setState = useState(globalState)[1];
+export const useStore = (shouldListen = true) =>{
+    const setState = useState(globalState)[1]; // inserisco le praentesi quadre con l'1 perche qui voglio solo accedere al secondo valore
 
     const dispatch = (actionIdentifier, payload) => {
         const newState = actions[actionIdentifier](globalState, payload)
@@ -17,17 +17,24 @@ export const useStore = () =>{
     }
 
     useEffect(()=>{
-        listeners.push(setState);
+        if(shouldListen){
+            listeners.push(setState);    
+        }
+        
 
         return () => {
-            listeners = listeners.filter(li => li !== setState)
+            if(shouldListen){
+                listeners = listeners.filter(li => li !== setState)
+            }  
         }
-    }, [setState])
+    }, [setState, shouldListen])
+
+    return [globalState, dispatch]
 }
 
 export const initStore = (userActions, initialState) => {
     if(initialState) {
-        globalState= {...globalState, initialState};
+        globalState= {...globalState, ...initialState};
     }
     actions = {...actions, ...userActions};
 }
